@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono&display=swap');
+
+* {
+	box-sizing: border-box;
+	font-family: 'DM Sans', 'sans-serif';
+	font-size: 20px;
+	color: rgb(187, 192, 201);
+}
+
+body {
+	background-color: rgb(42, 47, 56);
+	text-align: center;
+	margin: 50px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+header {
+	font-weight: bold;
+	font-size: 40px;
+	text-align: center;
+	padding-bottom: 100px;
+}
+
+::selection {
+	color: rgb(219, 228, 245);
+	background-color: rgb(62, 108, 192);
+}
