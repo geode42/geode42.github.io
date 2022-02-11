@@ -7,6 +7,11 @@ const advised_by = document.getElementById('advised-by')
 const comment_syntax = document.getElementById('comment-syntax')
 const code_block = document.getElementById('code-block')
 const clipboard_button = document.getElementById('clipboard-button')
+const footer_github_icon = document.getElementById('footer-github-icon')
+const footer_github_hyperlink = document.getElementById('footer-github-hyperlink')
+footer_github_hyperlink.draggable = false
+footer_github_icon.draggable = false
+
 var code_block_text = '// Fill in all of the input fields!\n\n\n\n'
 code_block.innerHTML = code_block_text
 
@@ -32,7 +37,7 @@ function checkInputs() {
 	return isValid;
 }
 
-$('input').filter('[required]').on('keyup', function () {
+$('input').filter('[required]').on('input', function () {
 	if (checkInputs() == true) {
 		code_block.style.color = 'rgb(187, 192, 201)'
 		code_block_text = header_format
@@ -58,5 +63,6 @@ $('input').filter('[required]').on('keyup', function () {
 	else {
 		code_block.style.color = 'rgb(119, 134, 161)'
 		clipboard_button.disabled = true
+		clipboard_button.style.backgroundColor = ''
 	}
 })
