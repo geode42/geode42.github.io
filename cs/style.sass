@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400500700&family=JetBrains+Mono&display=swap')
+
+$grid-gap: 18px
+
+*
+	box-sizing: border-box
+	font-family: 'DM Sans', 'sans-serif'
+	font-size: 20px
+	color: rgb(187, 192, 201)
+
+body
+	background-color: rgb(42, 47, 56)
+	margin: 50px 0px 0px 0px
+	padding: 0px
+
+
+	overflow-y: scroll
+	scrollbar-width: none
+	-ms-overflow-style: none
+
+	&::-webkit-scrollbar
+		width: 0
+		height: 0
+
+header
+	font-weight: bold
+	font-size: 40px
+	text-align: center
+	padding-bottom: 100px
+
+footer
+	background-color: rgb(28, 32, 39)
+
+::selection
+	color: rgb(219, 228, 245)
+	background-color: rgb(62, 108, 192)
+
+.top-stuff
+	min-height: 100vh
+
+.lines-grid
+	display: grid
+	grid-template-columns: repeat(3, calc(min(100vw, 800px) / 3 - 20px))
+	grid-template-rows: repeat(4, 55px) 100px auto
+	gap: $grid-gap
+	justify-content: center
+
+.full-width
+	grid-column: span 3
+
+input
+	padding: 10px
+	font-weight: bold
+	background-color: rgb(34, 34, 41)
+	outline: none
+	border: 4px solid rgb(71, 75, 85)
+	border-radius: 10px
+	transition-property: height border-color
+	transition-duration: 0.3s
+	
+	&:hover
+		border-color: rgb(102, 107, 117)
+
+	&:focus
+		font-size: 20px
+		transform: scale(1.05)
+		border-color: rgb(231, 195, 77)
+
+	&::placeholder
+		color: rgb(116, 121, 131)
+
+.comment-syntax
+	font-family: 'JetBrains Mono', monospace
+	margin-top: 45px
+	margin-bottom: 0px
+	gap: 0px
+	width: 325px
+
+	&::placeholder
+		font-family: 'DM Sans', sans-serif
+
+pre code
+	color: rgb(119, 134, 161)
+	font-family: 'JetBrains Mono', monospace
+	font-size: calc(1.0vw + 10px)
+	@media (min-width: 780px)
+		font-size: 18px
+	background-color: rgb(32, 36, 44)
+	display: block
+	padding: 20px
+	border-radius: 15px
+	tab-size: 4
+	margin-top: -50px
+	transition: color 0.3s
+	text-align: left
+
+pre
+	flex-grow: 1
+
+.desc-grid
+	padding-top: 50px
+	margin-left: 50px
+	margin-right: 50px
+	display: grid
+	grid-template-columns: repeat(1, fit-content(800px))
+	justify-content: center
+	gap: 20px
+	padding-bottom: 100px
+
+@media (min-width: 1100px)
+	.desc-grid
+		margin-left: 100px
+		margin-right: 100px
+		grid-template-columns: repeat(2, fit-content(700px))
+
+.copy-to-clipboard
+	width: 40px
+	height: 40px
+
+.code-block-section
+	display: flex
+	align-items: flex-start
+	justify-content: space-between
+	gap: $grid-gap
+
+button
+	background-color: rgb(248, 207, 73)
+	outline: none
+	border: none
+	border-radius: 10px
+	color: rgb(42, 47, 56)
+	transition: transform 0.05s
+
+	&:hover:enabled
+		background-color: rgb(255, 222, 112)
+		transform: scale(1.1)
+
+	&:active:enabled
+		background-color: rgb(209, 175, 61)
+		transform: scale(0.85)
+
+	&:enabled
+		cursor: pointer
+		transition: background-color, 0.3s
+
+	&:disabled
+		background-color: rgba(152, 156, 167, 0.39)
+		transition: background-color, 0.3s
+
+
+
+.footer-grid
+	display: grid
+	grid-template-columns: repeat(3, calc(clamp(100px, 80%, 800px) / 3))
+	grid-template-rows: repeat(6, auto)
+	gap: clamp(10px, 100%, 30px)
+	justify-content: center
+	align-items: center
+	padding-top: 50px
+
+.footer-github
+	width: 50px
+	vertical-align: middle
+	padding-right: 10px
+
+.footer-links
+	vertical-align: middle
+	text-decoration: none
+	font-weight: bold
