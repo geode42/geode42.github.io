@@ -40,7 +40,7 @@ function draw(e) {
 	c.lineCap = 'round'
 	c.lineTo(e.clientX, e.clientY)
 	c.stroke()
-	c.closePath()
+	c.beginPath()
 	c.moveTo(e.clientX, e.clientY)
 }
 
