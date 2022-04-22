@@ -8,6 +8,19 @@
 	<link rel='stylesheet' href='minesweeper.css'>
 </head>
 <body>
+	<div id='right-click-blocker'></div> <!--To prevent right-clicks between tiles-->
+	<div id='settings-container'>
+		<div id='style-dropdown'></div>
+		<div id='mine-percentage-container'>
+			<span>Mine Concentration:</span>
+			<span id='difficulty-input' data-max='100' data-common-length='3' class='scroll-input' <abbr title='Scroll to edit the percentage of tiles that contain mines'></abbr>></span>
+		</div>
+		<div id='scale-container'>
+			<span>Board Scale:</span>
+			<span id='scale-input' data-min='1' data-max='1000' data-common-length="4" class='scroll-input' <abbr title='Scroll to edit the scale of the board'></abbr>></span>
+		</div>
+		<button id='restart-button' onclick='generateBoard()'>Create new board</button>
+	</div>
 	<div id='tile-container'></div>
 
 	<script src='minesweeper.js'></script>
