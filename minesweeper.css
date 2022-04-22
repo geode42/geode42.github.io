@@ -1,0 +1,23 @@
+@font-face {
+	font-family: 'Roboto';
+	src: url('roboto-bold.ttf')
+}
+
+body {
+	background-color: rgb(37, 37, 37);
+}
+
+.tile {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 200%;
+	user-select: none;
+	font-family: 'Roboto', sans-serif;
+	border-radius: 5%;
+}
+
+.tile:hover {
+	cursor: pointer;
+}
