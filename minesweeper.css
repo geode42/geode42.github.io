@@ -1,6 +1,7 @@
 @font-face {
 	font-family: 'Roboto';
-	src: url('roboto-bold.ttf')
+	src: url('roboto-bold.ttf');
+	font-weight: bold;
 }
 
 body {
@@ -15,6 +16,7 @@ body {
 	font-size: 200%;
 	user-select: none;
 	font-family: 'Roboto', sans-serif;
+	font-weight: bold;
 	border-radius: 5%;
 }
 
