@@ -2,6 +2,7 @@ let colors = {
 	tileColor: 'rgb(83, 145, 212)',
 	flaggedColor: 'rgb(232, 200, 83)',
 	revealedColor: 'rgb(220, 220, 220)',
+	mineColor: 'rgb(227, 68, 68)',
 	text1Color: 'rgb(40, 127, 210)',
 	text2Color: 'rgb(70, 163, 62)',
 	text3Color: 'rgb(216, 79, 79)',
@@ -11,11 +12,15 @@ let colors = {
 	text7Color: 'rgb(166, 61, 61)',
 	text8Color: 'rgb(75, 31, 110)',
 }
-let scrollableInputTimeoutDelay = 500, generateBoardDelay = 500
+let scrollableInputTimeoutDelay = 500, generateBoardDelay = 500, endGameRevealMineDelay = 5
 
 let scrollableInputs = document.getElementsByClassName('scroll-input')
 
 let scrollableInputTimer
+
+let gameEnded = false
+let hiddenTilesCount = 0
+let mineCount = 0
 
 function scrollableInputKeyDown(e) {
 	if (!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)) return
@@ -138,7 +143,10 @@ let mineGrid = []
 let xres, yres, gridSizeX, gridSizeY, outerPaddingX, outerPaddingY
 
 function generateBoard() {
+	gameEnded = false
 	restartButton.disabled = true
+	settingsContainer.style.backgroundColor = 'rgb(50, 50, 50)'
+	restartButton.style.color = 'auto'
 	let tileSize = parseInt(scaleInput.textContent)
 	let sizeModifier = tileSize / defaultTileSize
 	let tilePadding = defaultTilePadding * sizeModifier
@@ -153,6 +161,8 @@ function generateBoard() {
 	outerPaddingY = ((yres - settingsContainerHeight) - (tileSize * gridSizeY + tilePadding * (gridSizeY - 1))) / 2
 
 	mineGrid = []
+
+	hiddenTilesCount = gridSizeX * gridSizeY
 
 	rightClickBlocker.style.top = `${settingsContainerHeight + outerPaddingY - tilePadding}px`
 	rightClickBlocker.style.bottom = `${outerPaddingY - tilePadding}px`
@@ -180,6 +190,7 @@ function generateBoard() {
 			tile.addEventListener('contextmenu', e => e.preventDefault())
 	
 			tile.addEventListener('mousedown', (e) => {
+				if (gameEnded) return
 				let x = parseInt(tile.getAttribute('x')), y = parseInt(tile.getAttribute('y'))
 				if (e.button == 2) {
 					if (tile.getAttribute('flagged') === 'false') {
@@ -212,7 +223,7 @@ function arrayInArray(childArray, parentArray) {
 }
 
 function generateMines(x, y) {
-	let mineCount = Math.round(parseInt(difficultyInput.textContent) / 100 * gridSizeX * gridSizeY)
+	mineCount = Math.round(parseInt(difficultyInput.textContent) / 100 * gridSizeX * gridSizeY)
 	if (mineCount > gridSizeX * gridSizeY - 9) {
 		mineCount = gridSizeX * gridSizeY - 9
 	}
@@ -277,10 +288,17 @@ function tileIsRevealed(x, y) {
 }
 
 function getTileElementFromCoords(x, y) {
-	return document.getElementById(`${i[0]}-${i[1]}`)
+	return document.getElementById(`${x}-${y}`)
 }
 
 function checkAdjacentTiles(x, y) {
+	if (tileContainsMine(x, y)) {
+		let tile = getTileElementFromCoords(x, y)
+		tile.style.backgroundColor = colors['mineColor']
+		endGame()
+		return
+	}
+
 	if (tileIsRevealed(x, y)) {
 		let flaggedCount = 0
 		for (i of getAdjacentTiles(x, y)) {
@@ -314,7 +332,7 @@ function checkAdjacentTiles(x, y) {
 	for (i of tilesToClear) {
 		let tile = getTileElementFromCoords(i[0], i[1])
 		if (tileContainsMine(i[0], i[1])) {
-			tile.style.backgroundColor = 'rgb(227, 68, 68)'
+			tile.style.backgroundColor = colors['mineColor']
 			continue
 		}
 		if (tile.getAttribute('flagged') == 'true' && !(i[0] == x && i[1] == y)) continue
@@ -328,6 +346,12 @@ function checkAdjacentTiles(x, y) {
 			tile.appendChild(document.createTextNode(mineCount))
 			tile.style.color = colors[`text${mineCount}Color`]
 		}
+		hiddenTilesCount -= 1
+	}
+
+	if (hiddenTilesCount == mineCount) {
+		victory()
+		return
 	}
 }
 
@@ -335,4 +359,34 @@ generateBoard()
 
 window.onresize = () => {
 	if (mineGrid.length == 0) generateBoard()
+}
+
+function endGame() {
+	gameEnded = true
+
+	let tiles = document.getElementsByClassName('tile')
+
+	for (let i = 0; i < tiles.length; i++) {
+		element = tiles.item(i)
+		element.style.cursor = 'auto'
+	}
+
+	for (i in mineGrid) {
+		let tile = getTileElementFromCoords(mineGrid[i][0], mineGrid[i][1])
+		setTimeout(() => {tile.style.backgroundColor = colors['mineColor']}, i * endGameRevealMineDelay)
+	}
+}
+
+function victory() {
+	gameEnded = true
+
+	let tiles = document.getElementsByClassName('tile')
+
+	for (let i = 0; i < tiles.length; i++) {
+		element = tiles.item(i)
+		element.style.cursor = 'auto'
+	}
+
+	settingsContainer.style.backgroundColor = 'rgb(50, 122, 59)'
+	restartButton.style.color = 'white'
 }
