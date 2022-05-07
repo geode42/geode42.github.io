@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Geo Minesweeper</title>
+	<meta charset='UTF-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	<meta name='keywords' content='Minesweeper'>
+	<meta name='description' content='A simple website that allows you to play Minesweeper. No advertisements, no accounts, just minesweeper.'>
+	<meta name='author' content='Geode'>
+	<title>Simply Minesweeper</title>
 	<link rel='stylesheet' href='minesweeper.css'>
 </head>
 <body>
@@ -13,11 +16,11 @@
 		<div id='style-dropdown'></div>
 		<div id='mine-percentage-container'>
 			<span>Mine Concentration:</span>
-			<span id='difficulty-input' data-max='100' data-common-length='3' class='scroll-input' <abbr title='Scroll to edit the percentage of tiles that contain mines'></abbr>></span>
+			<span id='difficulty-input' data-max='100' data-common-length='3' class='scroll-input' <abbr title='Scroll, type, or click (and then scroll/type) to edit the percentage of tiles that contain mines'></abbr>></span>
 		</div>
 		<div id='scale-container'>
 			<span>Board Scale:</span>
-			<span id='scale-input' data-min='1' data-max='1000' data-common-length="4" class='scroll-input' <abbr title='Scroll to edit the scale of the board'></abbr>></span>
+			<span id='scale-input' data-min='1' data-max='1000' data-common-length='4' class='scroll-input' <abbr title='Scroll, type, or click (and then scroll/type) to edit the scale of the board'></abbr>></span>
 		</div>
 		<button id='restart-button' onclick='generateBoard()'>Create new board</button>
 	</div>
