@@ -23,23 +23,41 @@ let hiddenTilesCount = 0
 let mineCount = 0
 
 function scrollableInputKeyDown(e) {
-	if (!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)) return
+	if (e.key == 'Escape') {
+		for (let i = 0; i < scrollableInputs.length; i++) {
+			let element = scrollableInputs.item(parseInt(i))
+			element.dataset.selected = 'false'
+			element.dataset.active = 'false';
+			element.dataset.rawVal = parseInt(element.textContent)
+		}
+		return
+	}
+	if (!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace'].includes(e.key)) return
 	for (let i = 0; i < scrollableInputs.length; i++) {
 		let element = scrollableInputs.item(parseInt(i))
-		if (element.dataset.mouseOver == 'false') continue
+
+		if (!(element.dataset.mouseOver == 'true' || element.dataset.selected == 'true')) continue
 
 		if (element.getAttribute('key-' + e.key) == 'true') continue
 
-		let val = parseInt(element.textContent)
-		let prefix = element.textContent.substring(0, element.textContent.indexOf(val))
-		let suffix = element.textContent.substring(element.textContent.indexOf(val) + JSON.stringify(val).length)
-		let min = element.dataset.min
-		let max = element.dataset.max
-		if (element.dataset.active == 'false') {
-			newVal = parseInt(e.key)
+		let showVal = parseInt(element.textContent)
+		let val = element.dataset.rawVal
+		let prefix = element.textContent.substring(0, element.textContent.indexOf(showVal))
+		let suffix = element.textContent.substring(element.textContent.indexOf(showVal) + JSON.stringify(showVal).length)
+		let min = parseInt(element.dataset.min)
+		let max = parseInt(element.dataset.max)
+		let newVal = 0
+		if (e.key == 'Backspace') {
+			if (val.length == 1) newVal = 0
+			else newVal = parseInt(val.slice(0, -1))
 		} else {
-			newVal = parseInt(JSON.stringify(val) + e.key)
+			if (element.dataset.active == 'false') {
+				newVal = parseInt(e.key)
+			} else {
+				newVal = parseInt(val + e.key)
+			}
 		}
+		if (((min <= newVal) && (newVal <= max)) || ((min <= parseInt(val)) && (parseInt(val) <= max))) element.dataset.rawVal = newVal
 		if (newVal < min) newVal = min
 		if (newVal > max) newVal = max
 		element.textContent = `${prefix}${newVal}${suffix}`
@@ -58,15 +76,29 @@ function scrollableInputKeyDown(e) {
 }
 
 function scrollableInputKeyUp(e) {
-	if (!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key)) return
+	if (!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace'].includes(e.key)) return
 	for (let i = 0; i < scrollableInputs.length; i++) {
 		let element = scrollableInputs.item(parseInt(i))
-		if (element.dataset.mouseOver == 'false') continue
+		if (!(element.dataset.mouseOver == 'true' || element.dataset.selected == 'true')) continue
 		
 		element.setAttribute('key-' + e.key, 'false')
-		function timeoutFunction() {element.dataset.active = 'false'}
+		if (element.dataset.selected == 'true') continue
+		function timeoutFunction() {element.dataset.active = 'false'; element.dataset.rawVal = parseInt(element.textContent)}
 		clearTimeout(scrollableInputTimer)
 		scrollableInputTimer = setTimeout(timeoutFunction, scrollableInputTimeoutDelay)
+	}
+}
+
+function scrollableInputMouseDown(e) {
+	if (e.button != 0) return
+	for (let i = 0; i < scrollableInputs.length; i++) {
+		let element = scrollableInputs.item(parseInt(i))
+		if (element.dataset.mouseOver == 'false') {
+			element.dataset.selected = 'false'
+			continue
+		}
+
+		element.dataset.selected = 'true'
 	}
 }
 
@@ -109,7 +141,8 @@ for (let i = 0; i < scrollableInputs.length; i++) {
 	if (commonLength == undefined) element.dataset.commonLength = `${prefix}${element.dataset.max}${suffix}`.length
 	element.style.minWidth = `${element.dataset.commonLength}ch`
 	element.dataset.preGapAmount = 0
-
+	
+	element.dataset.rawVal = val
 	element.dataset.mouseOver = 'false'
 	
 	element.addEventListener('wheel', (e) => scrollableInputWheel(e, element))
@@ -125,6 +158,7 @@ for (let i = 0; i < scrollableInputs.length; i++) {
 
 document.addEventListener('keydown', (e) => scrollableInputKeyDown(e))
 document.addEventListener('keyup', (e) => scrollableInputKeyUp(e))
+document.addEventListener('mousedown', (e) => scrollableInputMouseDown(e))
 
 const difficultyInput = document.getElementById('difficulty-input')
 const scaleInput = document.getElementById('scale-input')
@@ -295,7 +329,7 @@ function checkAdjacentTiles(x, y) {
 	if (tileContainsMine(x, y)) {
 		let tile = getTileElementFromCoords(x, y)
 		tile.style.backgroundColor = colors['mineColor']
-		endGame()
+		loseFunction()
 		return
 	}
 
@@ -337,7 +371,7 @@ function checkAdjacentTiles(x, y) {
 		}
 		if (tile.getAttribute('flagged') == 'true' && !(i[0] == x && i[1] == y)) continue
 
-		if (tileIsRevealed(i[0], i[1])) continue
+		if (tileIsRevealed(i[0], i[1])) continue // Prevents numbered empty tiles from getting their number repeated
 		tile.style.backgroundColor = colors['revealedColor']
 		tile.setAttribute('hidden', 'false')
 		tile.style.cursor = 'auto'
@@ -350,7 +384,7 @@ function checkAdjacentTiles(x, y) {
 	}
 
 	if (hiddenTilesCount == mineCount) {
-		victory()
+		winFunction()
 		return
 	}
 }
@@ -361,7 +395,7 @@ window.onresize = () => {
 	if (mineGrid.length == 0) generateBoard()
 }
 
-function endGame() {
+function loseFunction() {
 	gameEnded = true
 
 	let tiles = document.getElementsByClassName('tile')
@@ -377,7 +411,7 @@ function endGame() {
 	}
 }
 
-function victory() {
+function winFunction() {
 	gameEnded = true
 
 	let tiles = document.getElementsByClassName('tile')

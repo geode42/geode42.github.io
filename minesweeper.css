@@ -20,6 +20,9 @@
 	src: url('JetBrainsMono-Regular.ttf');
 }
 
+* {
+	box-sizing: border-box;
+}
 
 body {
 	background-color: rgb(37, 37, 37);
@@ -37,9 +40,16 @@ body {
 	padding: 7px;
 	font-family: 'JetBrains Mono';
 	min-width: 2ch;
-	border-radius: 15%;
+	border-radius: 8px;
 	user-select: none;
 	font-size: 15px;
+	outline: 0 solid transparent;
+	transition-property: outline-width, outline-color;
+	transition-duration: 0.2s;
+}
+
+.scroll-input[data-selected='true'] {
+	outline: 3px solid #e0e0e0
 }
 
 .tile {
