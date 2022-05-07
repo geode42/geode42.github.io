@@ -35,20 +35,21 @@ function scrollableInputKeyDown(e) {
 	if (!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace'].includes(e.key)) return
 	for (let i = 0; i < scrollableInputs.length; i++) {
 		let element = scrollableInputs.item(parseInt(i))
+		let childNodes = element.children
+		let prefixElement = childNodes.item(0)
+		let valueElement = childNodes.item(1)
+		let suffixElement = childNodes.item(2)
 
 		if (!(element.dataset.mouseOver == 'true' || element.dataset.selected == 'true')) continue
 
 		if (element.getAttribute('key-' + e.key) == 'true') continue
 
-		let showVal = parseInt(element.textContent)
 		let val = element.dataset.rawVal
-		let prefix = element.textContent.substring(0, element.textContent.indexOf(showVal))
-		let suffix = element.textContent.substring(element.textContent.indexOf(showVal) + JSON.stringify(showVal).length)
 		let min = parseInt(element.dataset.min)
 		let max = parseInt(element.dataset.max)
 		let newVal = 0
 		if (e.key == 'Backspace') {
-			if (val.length == 1) newVal = 0
+			if (val.length == 1) newVal = min
 			else newVal = parseInt(val.slice(0, -1))
 		} else {
 			if (element.dataset.active == 'false') {
@@ -60,7 +61,7 @@ function scrollableInputKeyDown(e) {
 		if (((min <= newVal) && (newVal <= max)) || ((min <= parseInt(val)) && (parseInt(val) <= max))) element.dataset.rawVal = newVal
 		if (newVal < min) newVal = min
 		if (newVal > max) newVal = max
-		element.textContent = `${prefix}${newVal}${suffix}`
+		valueElement.textContent = newVal
 		element.dataset.active = 'true'
 		clearTimeout(scrollableInputTimer)
 		element.setAttribute('key-' + e.key, 'true')
@@ -103,22 +104,24 @@ function scrollableInputMouseDown(e) {
 }
 
 function scrollableInputWheel(e, element) {
-	let val = parseInt(element.textContent)
-	let prefix = element.textContent.substring(element.dataset.preGapAmount, element.textContent.indexOf(val))
-	let suffix = element.textContent.substring(element.textContent.indexOf(val) + JSON.stringify(val).length)
-	let newVal = val - Math.round(e.deltaY * 0.01)
-	let min = element.dataset.min
-	let max = element.dataset.max
+	let childNodes = element.children
+	let prefixElement = childNodes.item(0)
+	let valueElement = childNodes.item(1)
+	let suffixElement = childNodes.item(2)
+
+	let val = parseInt(valueElement.textContent)
+	let newVal = 0
+	if (e.deltaY > 0) {
+		newVal = val - 1
+	} else {
+		newVal = val + 1
+	}
+	let min = parseInt(element.dataset.min)
+	let max = parseInt(element.dataset.max)
 	if (newVal < min) newVal = min
 	if (newVal > max) newVal = max
 
-	let newText = `${prefix}${newVal}${suffix}` 
-
-	let preGapAmount = element.dataset.commonLength - newText.length
-	if (preGapAmount < 0) preGapAmount = 0
-	element.dataset.preGapAmount = preGapAmount
-
-	element.textContent = `${String.fromCharCode(160).repeat(preGapAmount)}${prefix}${newVal}${suffix}`
+	valueElement.textContent = newVal
 
 	// There's probably a better way to do this, but I don't know what it is... so...
 	if (element == scaleInput) {
@@ -126,35 +129,43 @@ function scrollableInputWheel(e, element) {
 	}
 }
 
-for (let i = 0; i < scrollableInputs.length; i++) {
-	let element = scrollableInputs.item(parseInt(i))
-	element.dataset.active = 'false'
-	let val = parseInt(element.textContent)
-	let prefix = element.textContent.substring(0, element.textContent.indexOf(val))
-	let suffix = element.textContent.substring(element.textContent.indexOf(val) + JSON.stringify(val).length)
-	let min = element.dataset.min
-	let max = element.dataset.max
-	if (min == undefined) element.dataset.min = 0
-	if (max == undefined) element.dataset.max = 100
+document.addEventListener('DOMContentLoaded', () => {
+	for (let i = 0; i < scrollableInputs.length; i++) {
+		let element = scrollableInputs.item(parseInt(i))
+		let childNodes = element.children
+		let prefixElement = childNodes.item(0)
+		let valueElement = childNodes.item(1)
+		let suffixElement = childNodes.item(2)
+		element.dataset.active = 'false'
+		let val = parseInt(valueElement.textContent)
 
-	let commonLength = element.dataset.commonLength
-	if (commonLength == undefined) element.dataset.commonLength = `${prefix}${element.dataset.max}${suffix}`.length
-	element.style.minWidth = `${element.dataset.commonLength}ch`
-	element.dataset.preGapAmount = 0
+		let prefix = prefixElement.textContent
+		let suffix = suffixElement.textContent
+		let min = element.dataset.min
+		let max = element.dataset.max
+		if (min == undefined) element.dataset.min = 0
+		if (max == undefined) element.dataset.max = 100
 	
-	element.dataset.rawVal = val
-	element.dataset.mouseOver = 'false'
-	
-	element.addEventListener('wheel', (e) => scrollableInputWheel(e, element))
-
-	element.addEventListener('mouseover', () => {
-		element.dataset.mouseOver = 'true'
-	})
-	element.addEventListener('mouseout', () => {
+		let commonLength = element.dataset.commonLength
+		if (commonLength == undefined) element.dataset.commonLength = `${prefix}${element.dataset.max}${suffix}`.length
+		element.style.minWidth = `${element.dataset.commonLength}ch`
+		
+		element.dataset.rawVal = val
+		// element.textContent = `${prefix}${val}${suffix}`
 		element.dataset.mouseOver = 'false'
-		clearTimeout(scrollableInputTimer)
-	})
-}
+		
+		element.addEventListener('wheel', (e) => scrollableInputWheel(e, element))
+	
+		element.addEventListener('mouseover', () => {
+			element.dataset.mouseOver = 'true'
+		})
+		element.addEventListener('mouseout', () => {
+			element.dataset.mouseOver = 'false'
+			clearTimeout(scrollableInputTimer)
+			element.dataset.active = 'false'
+		})
+	}
+})
 
 document.addEventListener('keydown', (e) => scrollableInputKeyDown(e))
 document.addEventListener('keyup', (e) => scrollableInputKeyUp(e))
@@ -167,9 +178,6 @@ const rightClickBlocker = document.getElementById('right-click-blocker')
 const settingsContainer = document.getElementById('settings-container')
 const settingsContainerHeight = settingsContainer.offsetHeight
 const restartButton = document.getElementById('restart-button')
-
-difficultyInput.textContent = '15%'
-scaleInput.textContent = '50px'
 
 let defaultTileSize = 50, defaultTilePadding = 4, minOuterPadding = 20, TopBarPadding = 10, defaultFontSize = 30
 let mineGrid = []

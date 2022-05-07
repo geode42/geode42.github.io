@@ -27,6 +27,7 @@
 body {
 	background-color: rgb(37, 37, 37);
 	margin: 0px;
+	overscroll-behavior: none;
 }
 
 #settings-container > * {
@@ -34,21 +35,35 @@ body {
 	color: rgb(199, 199, 199)
 }
 
+.scroll-input-container {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
 .scroll-input {
-	display: inline-block;
+	display: flex;
 	background-color: rgba(0, 0, 0, 0.48);
 	padding: 7px;
 	font-family: 'JetBrains Mono';
-	min-width: 2ch;
 	border-radius: 8px;
 	user-select: none;
 	font-size: 15px;
 	outline: 0 solid transparent;
 	transition-property: outline-width, outline-color;
 	transition-duration: 0.2s;
+	gap: 3px;
 }
 
-.scroll-input[data-selected='true'] {
+.scroll-input-prefix, .scroll-input-suffix {
+	opacity: 75%;
+}
+
+.scroll-input[data-mouse-over='true'] {
+	outline: 3px solid #e0e0e084
+}
+
+.scroll-input[data-selected='true'], .scroll-input[data-active='true'] {
 	outline: 3px solid #e0e0e0
 }
 
