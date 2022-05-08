@@ -101,7 +101,6 @@ function scrollableInputMouseDown(e) {
 		}
 
 		element.dataset.selected = 'true'
-		element.focus()
 	}
 }
 
