@@ -12,12 +12,12 @@ let colors = {
 	text7Color: 'rgb(166, 61, 61)',
 	text8Color: 'rgb(75, 31, 110)',
 }
-let scrollableInputTimeoutDelay = 500, generateBoardDelay = 500, endGameRevealMineDelay = 5
+let scrollableInputTimeoutDelay = 500, generateBoardDelay = 500, holdTapFlagTimeoutDelay = 180, endGameRevealMineDelay = 5
 
 let scrollableInputs = document.getElementsByClassName('scroll-input')
 
-let scrollableInputTimer
-let regenerateBoardDelayTimer
+let scrollableInputTimer, regenerateBoardDelayTimer, holdTapFlagTimer
+let holdTapComplete = false
 
 let gameEnded = false
 let hiddenTilesCount = 0
@@ -104,6 +104,34 @@ function scrollableInputMouseDown(e) {
 	}
 }
 
+function scrollableInputTouchStart(e) {
+	tile = e.target
+	if (tile.className != 'tile') return
+	holdTapComplete = false
+	clearTimeout(holdTapFlagTimer)
+	function holdTapFlagTimeoutFunction() { // Copied from right-click handler far below in this file
+		holdTapComplete = true
+		if (tile.getAttribute('flagged') === 'false') {
+			if (tile.getAttribute('hidden') == 'true') {
+				tile.setAttribute('flagged', 'true')
+				tile.style.backgroundColor = colors['flaggedColor']
+			}
+		} else {
+			tile.setAttribute('flagged', 'false')
+			tile.style.backgroundColor = colors['tileColor']
+		}
+	}
+	holdTapFlagTimer = setTimeout(holdTapFlagTimeoutFunction, holdTapFlagTimeoutDelay)
+}
+
+function scrollableInputTouchEnd(e) {
+	clearTimeout(holdTapFlagTimer)
+	function releaseTapBufferTimeoutFunction() {
+		holdTapComplete = false
+	}
+	setTimeout(releaseTapBufferTimeoutFunction, 100) // Tap events seem to also register as click events, this simply disables click events for 1/10 of a second to fix that.
+}
+
 function scrollableInputWheel(e, element) {
 	let childNodes = element.children
 	let prefixElement = childNodes.item(0)
@@ -173,9 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 })
 
-document.addEventListener('keydown', (e) => scrollableInputKeyDown(e))
-document.addEventListener('keyup', (e) => scrollableInputKeyUp(e))
-document.addEventListener('mousedown', (e) => scrollableInputMouseDown(e))
+document.addEventListener('keydown', scrollableInputKeyDown)
+document.addEventListener('keyup', scrollableInputKeyUp)
+document.addEventListener('mousedown', scrollableInputMouseDown)
+document.addEventListener('touchstart', scrollableInputTouchStart)
+document.addEventListener('touchend', scrollableInputTouchEnd)
 
 const difficultyInput = document.getElementById('difficulty-input')
 const scaleInput = document.getElementById('scale-input')
@@ -238,6 +268,7 @@ function generateBoard() {
 			tile.addEventListener('contextmenu', e => e.preventDefault())
 	
 			tile.addEventListener('mousedown', (e) => {
+				if (holdTapComplete) return
 				if (gameEnded) return
 				let x = parseInt(tile.getAttribute('x')), y = parseInt(tile.getAttribute('y'))
 				if (e.button == 2) {
