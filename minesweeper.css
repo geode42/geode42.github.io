@@ -38,7 +38,8 @@ body {
 
 #settings-container > * {
 	font-family: 'DM Sans';
-	color: rgb(199, 199, 199)
+	color: rgba(255, 255, 255, 0.75);
+	font-size: clamp(12px, calc(4vw - 8px), 16px)
 }
 
 .scroll-input-container {
@@ -50,13 +51,13 @@ body {
 .scroll-input {
 	display: flex;
 	background-color: rgba(0, 0, 0, 0.48);
-	padding-top: 7px;
-	padding-bottom: 7px;
+	padding-top: clamp(5px, calc(4vw - 5px), 7px);
+	padding-bottom: clamp(5px, calc(4vw - 5px), 7px);
 	padding-left: 4px;
 	font-family: 'JetBrains Mono';
 	border-radius: 8px;
 	user-select: none;
-	font-size: 15px;
+	font-size: clamp(11px, calc(4vw - 9px), 15px);
 	transition: all 0.2s ease-in-out;
 	cursor: pointer;
 }
@@ -97,20 +98,21 @@ body {
 	background-color: rgb(50, 50, 50);
 	display: flex;
 	align-items: center;
-	padding-right: 50px;
+	padding-right: clamp(10px, calc(13vw - 60px), 50px);
 	justify-content: flex-end;
-	gap: 40px;
+	gap: clamp(10px, calc(20vw - 120px), 40px);
 }
 
 #restart-button {
+	font-size: clamp(12px, calc(4vw - 8px), 17px);
 	background-color: transparent;
 	border: none;
-	font-size: 17px;
 	font-weight: bold;
-	padding: 12px;
+	padding: clamp(6px, calc(2vw - 4px), 12px);
 	line-height: 12px;
-	border-radius: 10px;
+	border-radius: clamp(7px, calc(3vw - 13px),10px);
 	transition: all 0.3s;
+	/* background-color: red; */
 }
 
 #restart-button:hover:not(:disabled) {

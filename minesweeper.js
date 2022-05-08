@@ -266,8 +266,11 @@ function generateBoard() {
 }
 
 function arrayInArray(childArray, parentArray) {
-	if (JSON.stringify(parentArray).indexOf(JSON.stringify(childArray)) != -1) return true
-	return false
+	return parentArray.some(function (a) {
+		return a.length === childArray.length && a.every(function(x, i) {
+			return x === childArray[i]
+		})
+	})
 }
 
 function generateMines(x, y) {
@@ -305,9 +308,12 @@ function getAdjacentTiles(x, y) {
 	return adjacentTiles
 }
 
-function getAdjacentMinesCount(x, y) {
+function getAdjacentMinesCount(x, y, adj_tiles=undefined) {
+	if (adj_tiles == undefined) {
+		adj_tiles = getAdjacentTiles(x, y)
+	}
 	let mineCount = 0
-	for (i of getAdjacentTiles(x, y)) {
+	for (i of adj_tiles) {
 		if (arrayInArray(i, mineGrid)) {
 			mineCount++
 		}
@@ -320,8 +326,8 @@ function tileContainsMine(x, y) {
 	return false
 }
 
-function tileIsBlank(x, y) {
-	if (getAdjacentMinesCount(x, y) > 0) return false
+function tileIsBlank(x, y, adj_tiles) {
+	if (getAdjacentMinesCount(x, y, adj_tiles) > 0) return false
 	return true
 }
 
@@ -361,13 +367,15 @@ function checkAdjacentTiles(x, y) {
 	}
 
 	let tilesToClear = [[x, y]]
+	let tilesToClearString = 'x y '
 	let lookedAt = []
 
 	function idk(x, y) {
+		adj_tiles = getAdjacentTiles(x, y)
 		if (arrayInArray([x, y], lookedAt) || tileIsRevealed(x, y)) return
 		lookedAt.push([x, y])
-		if (tileIsBlank(x, y)) {
-			for (i of getAdjacentTiles(x, y)) {
+		if (tileIsBlank(x, y, adj_tiles)) {
+			for (i of adj_tiles) {
 				if (!arrayInArray(i, tilesToClear)) {
 					tilesToClear.push(i)
 					idk(i[0], i[1])
