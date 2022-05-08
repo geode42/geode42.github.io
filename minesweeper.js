@@ -17,6 +17,7 @@ let scrollableInputTimeoutDelay = 500, generateBoardDelay = 500, endGameRevealMi
 let scrollableInputs = document.getElementsByClassName('scroll-input')
 
 let scrollableInputTimer
+let regenerateBoardDelayTimer
 
 let gameEnded = false
 let hiddenTilesCount = 0
@@ -69,8 +70,8 @@ function scrollableInputKeyDown(e) {
 		// There's probably a better way to do this, but I don't know what it is... so...
 		if (element == scaleInput) {
 			function generateBoardOnEditTimeoutFunction() {if (mineGrid.length == 0) generateBoard()}
-			clearTimeout(element.dataset.generateBoardTimer)
-			element.dataset.generateBoardTimer = setTimeout(generateBoardOnEditTimeoutFunction, generateBoardDelay)
+			clearTimeout(regenerateBoardDelayTimer)
+			regenerateBoardDelayTimer = setTimeout(generateBoardOnEditTimeoutFunction, generateBoardDelay)
 		}
 
 	}
@@ -146,12 +147,17 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (min == undefined) element.dataset.min = 0
 		if (max == undefined) element.dataset.max = 100
 	
-		let commonLength = element.dataset.commonLength
-		if (commonLength == undefined) element.dataset.commonLength = `${prefix}${element.dataset.max}${suffix}`.length
-		element.style.minWidth = `${element.dataset.commonLength}ch`
+		if (prefix != '') {
+			prefixElement.style.minWidth = `${prefix.length}ch`
+			prefixElement.style.paddingLeft = `${element.dataset.padding}px`
+		}
+		if (suffix != '') {
+			suffixElement.style.minWidth = `${suffix.length}ch`
+			suffixElement.style.paddingRight = `${element.dataset.padding}px`
+		}
+		valueElement.style.minWidth = `${element.dataset.minWidth}ch`
 		
 		element.dataset.rawVal = val
-		// element.textContent = `${prefix}${val}${suffix}`
 		element.dataset.mouseOver = 'false'
 		
 		element.addEventListener('wheel', (e) => scrollableInputWheel(e, element))
