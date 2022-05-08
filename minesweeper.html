@@ -15,30 +15,32 @@
 	<div id='settings-container'>
 		<div id='style-dropdown'></div>
 		<div id='mine-percentage-container' class='scroll-input-container'>
-			<span>Mine Concentration:</span>
+			<span>Mine Concentration</span>
 			<div
 				id='difficulty-input'
 				data-max='100'
-				data-common-length='3'
+				data-min-width='4'
+				data-padding='11'
 				class='scroll-input'
 				<abbr title='Scroll, type, or click (and then scroll/type) to edit the percentage of tiles that contain mines'></abbr>
-				<span class='scroll-input-prefix'></span>
-				<span class='scroll-input-value'>15</span>
-				<span class='scroll-input-suffix'>%</span>
+				<div class='scroll-input-prefix'></div>
+				<div class='scroll-input-value'>15</div>
+				<div class='scroll-input-suffix'>%</div>
 			</div>
 		</div>
 		<div id='scale-container' class='scroll-input-container'>
-			<span>Board Scale:</span>
+			<span>Board Scale</span>
 			<span
 				id='scale-input'
 				data-min='15'
 				data-max='1000'
-				data-common-length='4'
+				data-min-width='4'
+				data-padding='11'
 				class='scroll-input'
 				<abbr title='Scroll, type, or click (and then scroll/type) to edit the scale of the board'></abbr>
-				<span class='scroll-input-prefix'></span>
-				<span class='scroll-input-value'>50</span>
-				<span class='scroll-input-suffix'>px</span>
+				<div class='scroll-input-prefix'></div>
+				<div class='scroll-input-value'>50</div>
+				<div class='scroll-input-suffix'>px</div>
 			</span>
 		</div>
 		<button id='restart-button' onclick='generateBoard()'>Create new board</button>
