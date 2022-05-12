@@ -12,7 +12,7 @@
 @font-face {
 	font-family: 'DM Sans';
 	src: url('DMSans-Bold.woff2');
-	font-weight: bold
+	font-weight: bold;
 }
 
 @font-face {
@@ -23,11 +23,14 @@
 @font-face {
 	font-family: 'JetBrains Mono';
 	src: url('JetBrainsMono-Bold.woff2');
-	font-weight: bold
+	font-weight: bold;
 }
 
 * {
 	box-sizing: border-box;
+	font-family: 'DM Sans';
+	color: rgba(255, 255, 255, 0.75);
+	font-size: clamp(12px, calc(4vw - 8px), 16px)
 }
 
 body {
@@ -36,43 +39,26 @@ body {
 	overscroll-behavior: none;
 }
 
-#settings-container > * {
-	font-family: 'DM Sans';
-	color: rgba(255, 255, 255, 0.75);
-	font-size: clamp(12px, calc(4vw - 8px), 16px)
-}
+/* Remove up and down buttons on type=number inputs, Webkit and Firefox */
+input::-webkit-inner-spin-button {display: none}
+input[type=number] {-moz-appearance: textfield}
 
-.scroll-input-container {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
 
-.scroll-input {
-	display: flex;
+fancy-input {
 	background-color: rgba(0, 0, 0, 0.48);
-	padding-top: clamp(5px, calc(4vw - 5px), 7px);
-	padding-bottom: clamp(5px, calc(4vw - 5px), 7px);
-	padding-left: 4px;
-	font-family: 'JetBrains Mono';
 	border-radius: 8px;
-	user-select: none;
-	font-size: clamp(11px, calc(4vw - 9px), 15px);
-	transition: all 0.2s ease-in-out;
-	cursor: pointer;
+	padding-top: 17px;
+	padding-bottom: 17px;
 }
 
-.scroll-input-value {
-	text-align: center;
+fancy-input * {
+	font-family: 'JetBrains Mono';
+	font-size: clamp(12px, calc(4vw - 8px), 15px)
 }
 
-.scroll-input-prefix, .scroll-input-suffix {
-	opacity: 70%;
+.fancy-input-unit {
+	color: rgba(255, 255, 255, 0.5);
 	font-weight: bold;
-}
-
-.scroll-input[data-selected='true'], .scroll-input[data-active='true'] {
-	transform: scale(1.12);
 }
 
 .tile {
@@ -98,12 +84,15 @@ body {
 	background-color: rgb(50, 50, 50);
 	display: flex;
 	align-items: center;
-	padding-right: clamp(10px, calc(13vw - 60px), 50px);
-	justify-content: flex-end;
+	justify-content: space-between;
+}
+
+#settings-right-container {
+	display: flex;
 	gap: clamp(10px, calc(20vw - 120px), 40px);
 }
 
-#restart-button {
+#create-new-board-button {
 	font-size: clamp(12px, calc(4vw - 8px), 17px);
 	background-color: transparent;
 	border: none;
@@ -112,23 +101,34 @@ body {
 	line-height: 12px;
 	border-radius: clamp(7px, calc(3vw - 13px),10px);
 	transition: all 0.3s;
+	margin-right: clamp(0px, calc(2vw + 2px), 50px)
 	/* background-color: red; */
 }
 
-#restart-button:hover:not(:disabled) {
+#create-new-board-button:hover:not(:disabled) {
 	background-color: rgba(255, 255, 255, 0.125);
 	cursor: pointer
 }
 
-#restart-button:active {
+#create-new-board-button:active {
 	transition: all 0.1s;
 	background-color: rgba(0, 0, 0, 0.267);
 }
 
-#restart-button:disabled {
+#create-new-board-button:disabled {
 	color: rgb(124, 124, 124);
 }
 
 #right-click-blocker {
 	position: absolute;
+}
+
+.label-fancy-input-pair-container {
+	display: flex;
+	align-items: center;
+	gap: 8px
+}
+
+.fancy-input-label {
+	user-select: none;
 }
