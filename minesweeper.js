@@ -15,7 +15,8 @@ let colors = {
 let generateBoardDelay = 500, holdTapFlagTimeoutDelay = 180, endGameRevealMineDelay = 5
 
 let regenerateBoardDelayTimer, holdTapFlagTimer
-let holdTapComplete = false
+
+let holdTapCompleted = false // Whether the timeout for "tapping and holding to flag" was completed
 
 let gameEnded = false
 let hiddenTilesCount = 0
@@ -80,28 +81,53 @@ function generateBoard() {
 			tile.id = `${i}-${j}`
 	
 			tile.addEventListener('contextmenu', e => e.preventDefault())
-	
-			tile.addEventListener('mousedown', (e) => {
-				if (holdTapComplete) return
-				if (gameEnded) return
-				let x = parseInt(tile.getAttribute('x')), y = parseInt(tile.getAttribute('y'))
-				if (e.button == 2) {
-					if (tile.getAttribute('flagged') === 'false') {
-						if (tile.getAttribute('hidden') == 'true') {
-							tile.setAttribute('flagged', 'true')
-							tile.style.backgroundColor = colors['flaggedColor']
-						}
-					} else {
-						tile.setAttribute('flagged', 'false')
-						tile.style.backgroundColor = colors['tileColor']
+
+			function handleRightClick() {
+				if (tile.getAttribute('flagged') === 'false') {
+					if (tile.getAttribute('hidden') == 'true') {
+						tile.setAttribute('flagged', 'true')
+						tile.style.backgroundColor = colors['flaggedColor']
 					}
-				} else if (e.button == 0) {
+				} else {
+					tile.setAttribute('flagged', 'false')
+					tile.style.backgroundColor = colors['tileColor']
+				}
+			}
+
+			function handleMouseDown(button) {
+				if (gameEnded) return
+				let x = i, y = j
+				if (button == 2) {
+					handleRightClick()
+				} else if (button == 0) {
 					if (mineGrid.length == 0) {
 						generateMines(x, y)
 						// createNewBoardButton.disabled = false
 					}
 					checkAdjacentTiles(x, y)
 				}
+			}
+
+			tile.addEventListener('touchstart', (e) => {
+				clearTimeout(holdTapFlagTimer)
+				function holdTapFlagTimeoutFunction() {
+					holdTapCompleted = true
+					handleRightClick()
+				}
+				holdTapFlagTimer = setTimeout(holdTapFlagTimeoutFunction, holdTapFlagTimeoutDelay)
+				e.preventDefault()
+			})
+
+			tile.addEventListener('touchend', (e) => {
+				clearTimeout(holdTapFlagTimer)
+				if (!holdTapCompleted) {
+					handleMouseDown(0)
+				}
+				holdTapCompleted = false
+			})
+	
+			tile.addEventListener('mousedown', (e) => {
+				handleMouseDown(e.button)
 			})
 	
 			tileContainer.appendChild(tile)
@@ -212,7 +238,6 @@ function checkAdjacentTiles(x, y) {
 	}
 
 	let tilesToClear = [[x, y]]
-	let tilesToClearString = 'x y '
 	let lookedAt = []
 
 	function idk(x, y) {

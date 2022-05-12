@@ -1,9 +1,9 @@
-<svg height="256" width="256">
+<svg xmlns="http://www.w3.org/2000/svg" height="512" width="512">
 	<style>
 		rect {fill: rgb(40, 40, 40)}
-		@media (prefers-color-scheme: dark) {rect {fill: rgb(200, 200, 200)}}
+		@media (prefers-color-scheme: dark) {rect {fill: rgb(220, 220, 220)}}
 		polygon {fill: rgb(255, 30, 30)}
 	</style>
-	<rect x="176" y="0" width="40" height="256"/>
-	<polygon points="176, 0 176, 150 46, 75"/>
+	<rect x="352" y="0" width="80" height="512"/>
+	<polygon points="352, 0 352, 300 92, 150"/>
 </svg>

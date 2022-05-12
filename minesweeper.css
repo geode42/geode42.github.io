@@ -67,6 +67,7 @@ fancy-input * {
 	justify-content: center;
 	align-items: center;
 	user-select: none;
+	-webkit-user-select: none;
 	font-family: 'Roboto', sans-serif;
 	font-weight: bold;
 	border-radius: 5%;
@@ -101,7 +102,9 @@ fancy-input * {
 	line-height: 12px;
 	border-radius: clamp(7px, calc(3vw - 13px),10px);
 	transition: all 0.3s;
-	margin-right: clamp(0px, calc(2vw + 2px), 50px)
+	margin-right: clamp(0px, calc(2vw + 2px), 50px);
+	user-select: none;
+	-webkit-user-select: none;
 	/* background-color: red; */
 }
 
@@ -131,4 +134,5 @@ fancy-input * {
 
 .fancy-input-label {
 	user-select: none;
+	-webkit-user-select: none;
 }
