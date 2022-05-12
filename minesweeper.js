@@ -53,7 +53,6 @@ function generateBoard() {
 	outerPaddingY = ((yres - settingsContainerHeight) - (tileSize * gridSizeY + tilePadding * (gridSizeY - 1))) / 2
 
 	mineGrid = []
-	console.log(tileSize)
 
 	hiddenTilesCount = gridSizeX * gridSizeY
 
