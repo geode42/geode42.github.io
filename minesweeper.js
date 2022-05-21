@@ -12,11 +12,16 @@ let colors = {
 	text7Color: 'rgb(166, 61, 61)',
 	text8Color: 'rgb(75, 31, 110)',
 }
-let generateBoardDelay = 500, holdTapFlagTimeoutDelay = 180, endGameRevealMineDelay = 5
+let generateBoardDelay = 500, holdTapFlagTimeoutDelay = 150, endGameRevealMineDelay = 5
 
 let regenerateBoardDelayTimer, holdTapFlagTimer
 
 let holdTapCompleted = false // Whether the timeout for "tapping and holding to flag" was completed
+
+let tappedOnce = false // If your first action on the website is tapping and holding on a mine to flag it, Chrome
+                       // will ignore the vibration request and give you an error. I don't think there's anything
+					   // you could do about the ignored request, but I don't like unecessary errors; this is here to fix it.
+					   // To be clear the error doesn't actually impact the website in any way, I just prefer a cleaner console :)
 
 let gameEnded = false
 let hiddenTilesCount = 0
@@ -83,7 +88,7 @@ function generateBoard() {
 
 			function handleRightClick(touch=false) {
 				if (tile.getAttribute('hidden') == 'false') return
-				if (touch) navigator.vibrate(10)
+				if (touch && tappedOnce) navigator.vibrate(10)
 				if (tile.getAttribute('flagged') === 'true') {
 					tile.setAttribute('flagged', 'false')
 					tile.style.backgroundColor = colors['tileColor']
@@ -122,6 +127,7 @@ function generateBoard() {
 					handleMouseDown(0)
 				}
 				holdTapCompleted = false
+				tappedOnce = true
 			})
 	
 			tile.addEventListener('mousedown', (e) => {
