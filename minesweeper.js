@@ -37,9 +37,8 @@ let xres, yres, gridSizeX, gridSizeY, outerPaddingX, outerPaddingY
 
 function generateBoard() {
 	gameEnded = false
-	// createNewBoardButton.disabled = true
-	settingsContainer.style.backgroundColor = 'rgb(50, 50, 50)'
-	createNewBoardButton.style.color = 'auto'
+	settingsContainer.dataset.win = 'false'
+	createNewBoardButton.dataset.win = 'false'
 	let tileSize = parseInt(scaleInput.value)
 	let sizeModifier = tileSize / defaultTileSize
 	let tilePadding = defaultTilePadding * sizeModifier
@@ -102,7 +101,6 @@ function generateBoard() {
 				} else if (button == 0) {
 					if (mineGrid.length == 0) {
 						generateMines(x, y)
-						// createNewBoardButton.disabled = false
 					}
 					checkAdjacentTiles(x, y)
 				}
@@ -122,6 +120,7 @@ function generateBoard() {
 				clearTimeout(holdTapFlagTimer)
 				if (!holdTapCompleted) {
 					handleMouseDown(0)
+					navigator.vibrate(200)
 				}
 				holdTapCompleted = false
 			})
@@ -313,6 +312,6 @@ function winFunction() {
 		element.style.cursor = 'auto'
 	}
 
-	settingsContainer.style.backgroundColor = 'rgb(50, 122, 59)'
-	createNewBoardButton.style.color = 'white'
+	settingsContainer.dataset.win = 'true'
+	createNewBoardButton.dataset.win = 'true'
 }

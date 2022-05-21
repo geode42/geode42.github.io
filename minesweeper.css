@@ -88,6 +88,10 @@ fancy-input * {
 	justify-content: space-between;
 }
 
+#settings-container[data-win='true'] {
+	background-color: rgb(50, 122, 59)
+}
+
 #settings-right-container {
 	display: flex;
 	gap: clamp(10px, calc(20vw - 120px), 40px);
@@ -106,6 +110,10 @@ fancy-input * {
 	user-select: none;
 	-webkit-user-select: none;
 	/* background-color: red; */
+}
+
+#create-new-board-button[data-win='true'] {
+	color: white
 }
 
 #create-new-board-button:hover:not(:disabled) {
