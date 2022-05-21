@@ -81,16 +81,16 @@ function generateBoard() {
 	
 			tile.addEventListener('contextmenu', e => e.preventDefault())
 
-			function handleRightClick() {
-				if (tile.getAttribute('flagged') === 'false') {
-					if (tile.getAttribute('hidden') == 'true') {
-						tile.setAttribute('flagged', 'true')
-						tile.style.backgroundColor = colors['flaggedColor']
-					}
-				} else {
+			function handleRightClick(touch=false) {
+				if (tile.getAttribute('hidden') == 'false') return
+				if (touch) navigator.vibrate(10)
+				if (tile.getAttribute('flagged') === 'true') {
 					tile.setAttribute('flagged', 'false')
 					tile.style.backgroundColor = colors['tileColor']
+					return
 				}
+				tile.setAttribute('flagged', 'true')
+				tile.style.backgroundColor = colors['flaggedColor']
 			}
 
 			function handleMouseDown(button) {
@@ -110,8 +110,7 @@ function generateBoard() {
 				clearTimeout(holdTapFlagTimer)
 				function holdTapFlagTimeoutFunction() {
 					holdTapCompleted = true
-					handleRightClick()
-					navigator.vibrate(10)
+					handleRightClick(true)
 				}
 				holdTapFlagTimer = setTimeout(holdTapFlagTimeoutFunction, holdTapFlagTimeoutDelay)
 				e.preventDefault()
