@@ -111,7 +111,7 @@ function generateBoard() {
 				function holdTapFlagTimeoutFunction() {
 					holdTapCompleted = true
 					handleRightClick()
-					navigator.vibrate(100)
+					navigator.vibrate(20)
 				}
 				holdTapFlagTimer = setTimeout(holdTapFlagTimeoutFunction, holdTapFlagTimeoutDelay)
 				e.preventDefault()
