@@ -30,7 +30,7 @@
 	box-sizing: border-box;
 	font-family: 'DM Sans';
 	color: rgba(255, 255, 255, 0.75);
-	font-size: clamp(12px, calc(4vw - 8px), 16px)
+	font-size: 16px;
 }
 
 body {
@@ -39,7 +39,7 @@ body {
 	overscroll-behavior: none;
 }
 
-/* Remove increment and decrement buttons on type=number inputs, Webkit and Firefox */
+/* Removes increment and decrement buttons on type=number inputs, Webkit and Firefox */
 input::-webkit-inner-spin-button {display: none}
 input[type=number] {-moz-appearance: textfield}
 
@@ -53,7 +53,7 @@ fancy-input {
 
 fancy-input * {
 	font-family: 'JetBrains Mono';
-	font-size: clamp(12px, calc(4vw - 8px), 15px)
+	font-size: 15px;
 }
 
 .fancy-input-unit {
@@ -84,6 +84,7 @@ fancy-input * {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	padding-left: 15px;
 }
 
 #settings-container[data-win='true'] {
@@ -92,7 +93,7 @@ fancy-input * {
 
 #settings-right-container {
 	display: flex;
-	gap: clamp(20px, calc(20vw - 120px), 40px);
+	gap: clamp(0px, calc(5vw - 10px), 40px);
 }
 
 #settings-container button {
@@ -100,12 +101,11 @@ fancy-input * {
 	background-color: transparent;
 	border: none;
 	font-weight: bold;
-	padding: 12px;
+	padding: clamp(1px, calc(2vw - 10px), 12px);
 	line-height: 12px;
 	border-radius: 10px;
 	transition: all 0.3s;
 	margin-right: clamp(10px, calc(10vw - 50px), 50px);
-	margin-left: clamp(-10px, calc(-5vw + 20px), 0px);
 	user-select: none;
 	-webkit-user-select: none;
 	-webkit-cursor: default; /* Safari is still annoying */
