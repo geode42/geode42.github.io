@@ -6,10 +6,11 @@ self.addEventListener('install', (e) => {
 })
 
 self.addEventListener('fetch', (e) => {
-	e.respondWith(
-		caches.match(e.request).then((cachedResponse) => {
-			if (cachedResponse) return cachedResponse
-			return fetch(e.request)
-		})
-	)
+	e.respondWith(async function() {
+		try {
+			return await fetch(e.request)
+		} catch (error) {
+			return caches.match(e.request)
+		}
+	}())
 })

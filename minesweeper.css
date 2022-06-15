@@ -39,7 +39,7 @@ body {
 	overscroll-behavior: none;
 }
 
-/* Remove up and down buttons on type=number inputs, Webkit and Firefox */
+/* Remove increment and decrement buttons on type=number inputs, Webkit and Firefox */
 input::-webkit-inner-spin-button {display: none}
 input[type=number] {-moz-appearance: textfield}
 
@@ -67,10 +67,11 @@ fancy-input * {
 	justify-content: center;
 	align-items: center;
 	user-select: none;
-	-webkit-user-select: none;
 	font-family: 'Roboto', sans-serif;
 	font-weight: bold;
 	border-radius: 5%;
+	-webkit-user-select: none;
+	-webkit-cursor: default; /* Safari is annoying */
 }
 
 .tile:hover {
@@ -91,22 +92,23 @@ fancy-input * {
 
 #settings-right-container {
 	display: flex;
-	gap: clamp(10px, calc(20vw - 120px), 40px);
+	gap: clamp(20px, calc(20vw - 120px), 40px);
 }
 
 #settings-container button {
-	font-size: clamp(12px, calc(4vw - 8px), 17px);
+	font-size: 17px;
 	background-color: transparent;
 	border: none;
 	font-weight: bold;
-	padding: clamp(6px, calc(2vw - 4px), 12px);
+	padding: 12px;
 	line-height: 12px;
-	border-radius: clamp(7px, calc(3vw - 13px),10px);
+	border-radius: 10px;
 	transition: all 0.3s;
-	margin-right: clamp(0px, calc(2vw + 2px), 50px);
+	margin-right: clamp(10px, calc(10vw - 50px), 50px);
+	margin-left: clamp(-10px, calc(-5vw + 20px), 0px);
 	user-select: none;
 	-webkit-user-select: none;
-	/* background-color: red; */
+	-webkit-cursor: default; /* Safari is still annoying */
 }
 
 #create-new-board-button[data-win='true'] {
@@ -140,4 +142,5 @@ fancy-input * {
 .fancy-input-label {
 	user-select: none;
 	-webkit-user-select: none;
+	-webkit-cursor: default; /* Safari continues to be annoying */
 }

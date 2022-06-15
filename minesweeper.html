@@ -2,18 +2,17 @@
 <html lang='en'>
 <head>
 	<meta charset='UTF-8'>
-	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 	<meta name='keywords' content='Minesweeper'>
 	<meta name='description' content='A simple website that allows you to play Minesweeper. No advertisements, accounts, analytics, or tracking, just minesweeper.'>
 	<meta name='author' content='Geode'>
-	<meta name='theme-color' content='#252525'>
+	<meta name='theme-color' content='#323232'>
 	<title>Simply Minesweeper</title>
 	<link rel='stylesheet' href='minesweeper.css'>
 	<link rel='icon' href='favicon.svg'>
 	<link rel='mask-icon' href='mask-icon.svg' color='black'>
 	<link rel='apple-touch-icon' href='apple-touch-icon.png'>
-	<link rel='manifest' href='minesweeper_manifest.json'>
+	<link rel='manifest' href='minesweeper.webmanifest'>
 </head>
 <body>
 	<!--To prevent right-clicks between tiles-->
@@ -27,7 +26,7 @@
 				<fancy-input id='difficulty-input' default-value='12' min='0' max='100' unit='%' value-length='4'></fancy-input>
 			</div>
 			<div class='label-fancy-input-pair-container'>
-				<span class='fancy-input-label'>Board Scale</span>
+				<span class='fancy-input-label'>Tile Size</span>
 				<fancy-input id='scale-input' default-value='50' min='0' max='1000' unit='px' value-length='4'></fancy-input>
 			</div>
 			<button id='create-new-board-button' onclick='generateBoard()'>Create new board</button>

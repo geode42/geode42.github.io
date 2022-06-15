@@ -1,0 +1,18 @@
+{
+	"name": "Simply Minesweeper",
+	"short_name": "Minesweeper",
+	"start_url": "https://geode42.com/minesweeper",
+	"icons": [
+		{
+		"src": "favicon.svg",
+		"sizes": "any"
+		},
+		{
+		"src": "favicon.png",
+		"sizes": "512x512"
+		}
+],
+	"background_color": "#252525",
+	"theme_color": "#323232",
+	"display": "standalone"
+}
