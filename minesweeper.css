@@ -30,7 +30,7 @@
 	box-sizing: border-box;
 	font-family: 'DM Sans';
 	color: rgba(255, 255, 255, 0.75);
-	font-size: 16px;
+	font-size: min(16px, calc(3vw - 0.5px)); /* vw should be adjusted such that it keeps up with the viewport resizing, px controls when this value takes over */
 }
 
 body {
@@ -46,14 +46,14 @@ input[type=number] {-moz-appearance: textfield}
 
 fancy-input {
 	background-color: rgba(0, 0, 0, 0.48);
-	border-radius: 8px;
-	padding-top: 17px;
-	padding-bottom: 17px;
+	border-radius: min(8px, calc(8vw - 23px));
+	padding-top: min(17px, calc(3vw + 0.5px));
+	padding-bottom: min(17px, calc(3vw + 0.5px));
 }
 
 fancy-input * {
 	font-family: 'JetBrains Mono';
-	font-size: 15px;
+	font-size: min(15px, calc(3vw - 1.5px));
 }
 
 .fancy-input-unit {
@@ -79,12 +79,11 @@ fancy-input * {
 }
 
 #settings-container {
-	height: 50px;
+	height: min(50px, calc(6vw + 20px));
 	background-color: rgb(50, 50, 50);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding-left: 15px;
 }
 
 #settings-container[data-win='true'] {
@@ -97,7 +96,7 @@ fancy-input * {
 }
 
 #settings-container button {
-	font-size: 17px;
+	font-size: min(17px, calc(3vw + 0.5px));
 	background-color: transparent;
 	border: none;
 	font-weight: bold;
