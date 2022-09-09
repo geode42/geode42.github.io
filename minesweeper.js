@@ -1,4 +1,4 @@
-let colors = {
+const colors = {
 	tileColor: 'rgb(83, 145, 212)',
 	flaggedColor: 'rgb(232, 200, 83)',
 	revealedColor: 'rgb(220, 220, 220)',
@@ -12,7 +12,7 @@ let colors = {
 	text7Color: 'rgb(166, 61, 61)',
 	text8Color: 'rgb(75, 31, 110)',
 }
-let generateBoardDelay = 500, holdTapFlagTimeoutDelay = 150, endGameRevealMineDelay = 5
+const generateBoardDelay = 500, holdTapFlagTimeoutDelay = 150, endGameRevealMineDelay = 5
 
 let regenerateBoardDelayTimer, holdTapFlagTimer
 
@@ -35,7 +35,7 @@ const settingsContainer = document.getElementById('settings-container')
 const settingsContainerHeight = settingsContainer.offsetHeight
 const createNewBoardButton = document.getElementById('create-new-board-button')
 
-let defaultTileSize = 50, defaultTilePadding = 4, minOuterPadding = 20, TopBarPadding = 10, defaultFontSize = 30
+const defaultTileSize = 50, defaultTilePadding = 4, minOuterPadding = 10, defaultFontSize = 30
 let mineGrid = []
 
 let xres, yres, gridSizeX, gridSizeY, outerPaddingX, outerPaddingY
